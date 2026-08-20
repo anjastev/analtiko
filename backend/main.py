@@ -7,18 +7,17 @@ from app.database.database import (
 )
 
 # ============================================================
-# IMPORT MODELS
+# MODELS
 #
-# Important:
-# Models must be imported before create_all()
-# so SQLAlchemy knows all tables.
+# Import all SQLAlchemy models before create_all()
+# so SQLAlchemy knows the complete database schema.
 # ============================================================
 
 import app.models
 
 
 # ============================================================
-# ROUTERS
+# API ROUTERS
 # ============================================================
 
 from app.api.matches import (
@@ -54,7 +53,6 @@ from app.api.analitiko import (
 )
 
 
-
 # ============================================================
 # DATABASE
 # ============================================================
@@ -65,7 +63,7 @@ Base.metadata.create_all(
 
 
 # ============================================================
-# APP
+# FASTAPI APPLICATION
 # ============================================================
 
 app = FastAPI(
@@ -78,24 +76,40 @@ app = FastAPI(
 )
 
 
-
-
 # ============================================================
 # CORS
+#
+# Local development:
+#   http://localhost:5173
+#   http://127.0.0.1:5173
+#
+# Production:
+#   https://analtiko-one.vercel.app
 # ============================================================
+
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://analtiko-one.vercel.app",
+]
+
 
 app.add_middleware(
     CORSMiddleware,
 
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://analtiko-one.vercel.app",
-    ],
+    allow_origins=(
+        ALLOWED_ORIGINS
+    ),
 
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+
+    allow_methods=[
+        "*",
+    ],
+
+    allow_headers=[
+        "*",
+    ],
 )
 
 
@@ -137,14 +151,6 @@ app.include_router(
 
 
 # ============================================================
-# TEMPORARY DATABASE IMPORT ROUTER
-#
-# REMOVE AFTER SQLITE -> POSTGRESQL MIGRATION.
-# ============================================================
-
-
-
-# ============================================================
 # ROOT
 # ============================================================
 
@@ -160,6 +166,9 @@ def root():
 
         "version":
             "0.1.0",
+
+        "environment":
+            "production-ready",
     }
 
 
@@ -173,4 +182,7 @@ def health():
     return {
         "status":
             "ok",
+
+        "service":
+            "analitiko-api",
     }
