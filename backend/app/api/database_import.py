@@ -137,10 +137,95 @@ def parse_value(
         .upper()
     )
 
+    # ========================================================
+    # BOOLEAN
+    #
+    # SQLite stores booleans as:
+    #
+    # 0 / 1
+    #
+    # PostgreSQL requires:
+    #
+    # False / True
+    # ========================================================
+
     if (
-        "DATE" in type_name
+        "BOOL"
+        in type_name
+    ):
+
+        if isinstance(
+            value,
+            bool,
+        ):
+
+            return value
+
+        if isinstance(
+            value,
+            int,
+        ):
+
+            return bool(
+                value
+            )
+
+        if isinstance(
+            value,
+            float,
+        ):
+
+            return bool(
+                int(
+                    value
+                )
+            )
+
+        if isinstance(
+            value,
+            str,
+        ):
+
+            normalized = (
+                value
+                .strip()
+                .lower()
+            )
+
+            if normalized in {
+                "1",
+                "true",
+                "yes",
+                "y",
+                "on",
+            }:
+
+                return True
+
+            if normalized in {
+                "0",
+                "false",
+                "no",
+                "n",
+                "off",
+            }:
+
+                return False
+
+        return bool(
+            value
+        )
+
+    # ========================================================
+    # DATETIME / DATE / TIME
+    # ========================================================
+
+    if (
+        "DATE"
+        in type_name
         or
-        "TIME" in type_name
+        "TIME"
+        in type_name
     ):
 
         if isinstance(
@@ -150,7 +235,7 @@ def parse_value(
 
             try:
 
-                parsed = (
+                return (
                     datetime.fromisoformat(
                         value.replace(
                             "Z",
@@ -159,18 +244,13 @@ def parse_value(
                     )
                 )
 
-                # Our existing database layer uses
-                # naive UTC values in several places.
-                #
-                # PostgreSQL columns generated from
-                # SQLAlchemy models determine whether
-                # timezone information is retained.
-
-                return parsed
-
             except ValueError:
 
                 return value
+
+    # ========================================================
+    # DEFAULT
+    # ========================================================
 
     return value
 
