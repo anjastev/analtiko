@@ -174,3 +174,7 @@ backend/uploads/
 
 exports/
 backend/exports/
+
+# Local database export
+backend/database_export.json
+database_export.json
