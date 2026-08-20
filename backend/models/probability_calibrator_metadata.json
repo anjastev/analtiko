@@ -1,0 +1,15 @@
+{
+  "status": "research_candidate",
+  "production_model_unchanged": true,
+  "method": "raw",
+  "total_rows": 1411,
+  "base_train_rows": 846,
+  "calibration_rows": 282,
+  "test_rows": 283,
+  "raw_log_loss": 1.029651061433936,
+  "sigmoid_log_loss": 1.03352224977051,
+  "isotonic_log_loss": 1.2731901578608733,
+  "raw_accuracy": 49.11660777385159,
+  "sigmoid_accuracy": 48.409893992932865,
+  "isotonic_accuracy": 50.53003533568905
+}
