@@ -10,6 +10,11 @@ from app.api.analytics import router as analytics_router
 import app.models
 from app.api.admin import router as admin_router
 
+from app.api.database_import import (
+    router as database_import_router,
+)
+
+
 from app.models.ml_prediction_snapshot import (
     MLPredictionSnapshot,
 )
@@ -84,6 +89,10 @@ app.include_router(
 )
 app.include_router(
     analitiko_router
+)
+
+app.include_router(
+    database_import_router,
 )
 # ============================================================
 # ROOT
