@@ -53,9 +53,6 @@ from app.api.analitiko import (
     router as analitiko_router,
 )
 
-from app.api.database_import import (
-    router as database_import_router,
-)
 
 
 # ============================================================
@@ -151,10 +148,6 @@ app.include_router(
 # REMOVE AFTER SQLITE -> POSTGRESQL MIGRATION.
 # ============================================================
 
-app.include_router(
-    database_import_router,
-    prefix="/api",
-)
 
 
 # ============================================================
